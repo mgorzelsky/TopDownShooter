@@ -34,5 +34,8 @@ export default class InputHandler {
         default:
       }
     });
+    document.addEventListener("keydown", event => {
+      if (event.code === "Space") ship.Fire();
+    });
   }
 }

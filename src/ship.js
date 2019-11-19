@@ -1,12 +1,12 @@
 export default class Ship {
-  constructor(gameWidth, gameHeight) {
-    this.gameWidth = gameWidth;
-    this.gameHeight = gameHeight;
+  constructor(game) {
+    this.gameWidth = game.gameWidth;
+    this.gameHeight = game.gameHeight;
     this.width = 15;
     this.height = 40;
     this.position = {
-      x: gameWidth / 2 - this.width / 2,
-      y: gameHeight - this.height - 20
+      x: game.gameWidth / 2 - this.width / 2,
+      y: game.gameHeight - this.height - 20
     };
     this.maxSpeed = 7;
     this.horizontalSpeed = 0;
@@ -37,14 +37,16 @@ export default class Ship {
     this.horizontalSpeed = 0;
   }
 
+  Fire() {
+    console.log("FIRE!");
+  }
+
   Draw(ctx) {
     ctx.fillStyle = "#d75a0e";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
   Update(deltaTime) {
-    if (!deltaTime) return;
-
     this.position.x += this.horizontalSpeed;
     this.position.y += this.verticalSpeed;
 
