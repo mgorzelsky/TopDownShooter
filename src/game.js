@@ -10,14 +10,21 @@ export default class Game {
 
   Start() {
     this.ship = new Ship(this);
-    this.projectile = new Projectile(this);
-    this.gameObjects = [this.ship, this.projectile];
+    this.gameObjects = [this.ship];
 
     new InputHandler(this.ship);
   }
 
+  CreateProjectile() {
+    this.gameObjects.push(new Projectile(this));
+  }
+
   Update(deltaTime) {
     this.gameObjects.forEach(object => object.Update(deltaTime));
+
+    this.gameObjects = this.gameObjects.filter(
+      object => !object.markedForDeletion
+    );
   }
 
   Draw(ctx) {

@@ -1,5 +1,6 @@
 export default class Ship {
   constructor(game) {
+    this.game = game;
     this.gameWidth = game.gameWidth;
     this.gameHeight = game.gameHeight;
     this.width = 15;
@@ -38,7 +39,7 @@ export default class Ship {
   }
 
   Fire() {
-    console.log("FIRE!");
+    this.game.CreateProjectile();
   }
 
   Draw(ctx) {
