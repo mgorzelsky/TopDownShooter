@@ -9,7 +9,7 @@ const GAME_HEIGHT = 600;
 
 let ship = new Ship(GAME_WIDTH, GAME_HEIGHT);
 
-new InputHandler();
+new InputHandler(ship);
 
 let lastTime = 0;
 
@@ -18,8 +18,8 @@ function gameLoop(timestamp) {
   lastTime = timestamp;
 
   ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-  ship.move(deltaTime);
-  ship.draw(ctx);
+  ship.Update(deltaTime);
+  ship.Draw(ctx);
 
   requestAnimationFrame(gameLoop);
 }
