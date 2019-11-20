@@ -1,10 +1,12 @@
 export default class EnemyFighter {
   constructor(game) {
+    this.image = document.getElementById("img_enemyFighter");
+
     this.game = game;
     this.gameWidth = game.gameWidth;
     this.gameHeight = game.gameHeight;
-    this.width = 15;
-    this.height = 40;
+    this.width = 27;
+    this.height = 39;
     this.position = {
       x: Math.floor(Math.random() * game.gameWidth),
       y: Math.floor(Math.random() * (game.gameHeight / 2))
@@ -14,7 +16,14 @@ export default class EnemyFighter {
     this.verticalSpeed = 0;
     this.markedForDeletion = false;
 
-    this.projectileSpeed = 6;
+    this.projectileSpeed = 70;
+    this.projectileOriginPoint = {
+      x: this.position.x + this.width / 2,
+      y: this.position.y + this.height + 2
+    };
+
+    this.fireRate = 50;
+    this.count = 1;
   }
 
   MoveUp() {
@@ -42,12 +51,17 @@ export default class EnemyFighter {
   }
 
   Fire() {
-    this.game.CreateProjectile();
+    this.game.CreateProjectile(this);
   }
 
   Draw(ctx) {
-    ctx.fillStyle = "#d75a0e";
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.drawImage(
+      this.image,
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
   }
 
   Update(deltaTime) {
@@ -60,5 +74,16 @@ export default class EnemyFighter {
     if (this.position.y < 0) this.position.y = 0;
     if (this.position.y + this.height > this.gameHeight)
       this.position.y = this.gameHeight - this.height;
+
+    this.projectileOriginPoint = {
+      x: this.position.x + this.width / 2,
+      y: this.position.y + this.height + 2
+    };
+
+    this.count++;
+    if (this.count === this.fireRate) {
+      this.count = 1;
+      this.Fire();
+    }
   }
 }

@@ -16,6 +16,14 @@ export default class Ship {
     this.verticalSpeed = 0;
 
     this.projectileSpeed = -70;
+    this.projectileOriginPoint = {
+      x: this.position.x + this.width / 2,
+      y: this.position.y - 1
+    };
+
+    this.fireRate = 15;
+    this.count = 1;
+    this.isFiring = false;
   }
 
   MoveUp() {
@@ -66,5 +74,18 @@ export default class Ship {
     if (this.position.y < 0) this.position.y = 0;
     if (this.position.y + this.height > this.gameHeight)
       this.position.y = this.gameHeight - this.height;
+
+    this.projectileOriginPoint = {
+      x: this.position.x + this.width / 2,
+      y: this.position.y - 1
+    };
+    this.count++;
+    if (this.isFiring && this.count === this.fireRate) {
+      this.count = 1;
+      this.Fire();
+    }
+    if (this.count === this.fireRate) {
+      this.count = 1;
+    }
   }
 }

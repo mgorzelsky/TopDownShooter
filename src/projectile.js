@@ -13,10 +13,9 @@ export default class Projectile {
 
     this.size = 5;
 
-    //HOW DO I MAKE THIS SCALE BY THE FIRING OBJECT POSITION?
     this.position = {
-      x: originObject.position.x + originObject.width / 2 - this.size / 2,
-      y: originObject.position.y - this.size - 1
+      x: originObject.projectileOriginPoint.x - this.size / 2,
+      y: originObject.projectileOriginPoint.y - this.size
     };
 
     this.markedForDeletion = false;
@@ -26,11 +25,17 @@ export default class Projectile {
     this.position.y += this.speed / deltaTime;
 
     //check for out of bounds of top.
-    if (this.position.y < 0) {
+    if (this.position.y < 0 || this.position.y > this.gameHeight) {
       this.markedForDeletion = true;
     }
 
     this.game.gameObjects.forEach(object => {
+      if (DetectCollision(this, object)) {
+        object.markedForDeletion = true;
+        this.markedForDeletion = true;
+      }
+    });
+    this.game.enemyFighters.forEach(object => {
       if (DetectCollision(this, object)) {
         object.markedForDeletion = true;
         this.markedForDeletion = true;
