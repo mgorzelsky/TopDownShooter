@@ -1,17 +1,21 @@
 export default class Ship {
   constructor(game) {
+    this.image = document.getElementById("img_playerShip");
+
     this.game = game;
     this.gameWidth = game.gameWidth;
     this.gameHeight = game.gameHeight;
-    this.width = 15;
-    this.height = 40;
+    this.width = 27;
+    this.height = 39;
     this.position = {
       x: game.gameWidth / 2 - this.width / 2,
       y: game.gameHeight - this.height - 20
     };
-    this.maxSpeed = 3;
+    this.maxSpeed = 30;
     this.horizontalSpeed = 0;
     this.verticalSpeed = 0;
+
+    this.projectileSpeed = -70;
   }
 
   MoveUp() {
@@ -39,17 +43,22 @@ export default class Ship {
   }
 
   Fire() {
-    this.game.CreateProjectile();
+    this.game.CreateProjectile(this);
   }
 
   Draw(ctx) {
-    ctx.fillStyle = "#000";
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.drawImage(
+      this.image,
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
   }
 
   Update(deltaTime) {
-    this.position.x += this.horizontalSpeed;
-    this.position.y += this.verticalSpeed;
+    this.position.x += this.horizontalSpeed / deltaTime;
+    this.position.y += this.verticalSpeed / deltaTime;
 
     if (this.position.x < 0) this.position.x = 0;
     if (this.position.x + this.width > this.gameWidth)

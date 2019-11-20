@@ -1,7 +1,7 @@
 export default class InputHandler {
   constructor(ship) {
     document.addEventListener("keydown", event => {
-      switch (event.key) {
+      switch (event.code) {
         case "ArrowUp": //up
           ship.MoveUp();
           break;
@@ -13,6 +13,9 @@ export default class InputHandler {
           break;
         case "ArrowRight": //right
           ship.MoveRight();
+          break;
+        case "Space":
+          ship.Fire();
           break;
         default:
       }
@@ -33,9 +36,6 @@ export default class InputHandler {
           break;
         default:
       }
-    });
-    document.addEventListener("keydown", event => {
-      if (event.code === "Space") ship.Fire();
     });
   }
 }
