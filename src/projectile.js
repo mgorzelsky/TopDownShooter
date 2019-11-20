@@ -9,7 +9,7 @@ export default class Projectile {
 
     this.game = game;
 
-    this.speed = -5;
+    this.speed = -6;
 
     this.size = 5;
     this.position = {
@@ -28,8 +28,10 @@ export default class Projectile {
       this.markedForDeletion = true;
     }
 
-    // if (DetectCollision(this, this.game.ship)) {
-    // }
+    if (DetectCollision(this, this.game.enemyFighter)) {
+      this.game.enemyFighter.markedForDeletion = true;
+      this.markedForDeletion = true;
+    }
   }
 
   Draw(ctx) {

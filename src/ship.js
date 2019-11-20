@@ -9,7 +9,7 @@ export default class Ship {
       x: game.gameWidth / 2 - this.width / 2,
       y: game.gameHeight - this.height - 20
     };
-    this.maxSpeed = 7;
+    this.maxSpeed = 3;
     this.horizontalSpeed = 0;
     this.verticalSpeed = 0;
   }
@@ -43,7 +43,7 @@ export default class Ship {
   }
 
   Draw(ctx) {
-    ctx.fillStyle = "#d75a0e";
+    ctx.fillStyle = "#000";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
