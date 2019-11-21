@@ -1,7 +1,7 @@
-import Ship from "./ship";
-import InputHandler from "./input";
-import Projectile from "./projectile";
-import EnemyFighter from "./enemyfighter";
+import Ship from "./ship.js";
+import InputHandler from "./input.js";
+import Projectile from "./projectile.js";
+import EnemyFighter from "./enemyfighter.js";
 
 const GAME_STATE = {
   PAUSED: 0,

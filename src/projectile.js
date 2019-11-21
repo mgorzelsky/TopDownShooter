@@ -1,4 +1,4 @@
-import { DetectCollision } from "./collisiondetection";
+import { DetectCollision } from "./collisiondetection.js";
 
 export default class Projectile {
   constructor(originObject) {
