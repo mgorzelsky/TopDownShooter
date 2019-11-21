@@ -11,11 +11,19 @@ export default class Ship {
       x: game.gameWidth / 2 - this.width / 2,
       y: game.gameHeight - this.height - 20
     };
-    this.maxSpeed = 30;
+    this.center = {
+      x: this.position.x + this.width / 2,
+      y: this.position.y + this.height / 2
+    }
+    this.maxSpeed = 35;
     this.horizontalSpeed = 0;
     this.verticalSpeed = 0;
 
-    this.projectileSpeed = -70;
+    //this.projectileSpeed = -70;
+    this.fireVector = {
+      x: 0,
+      y: -70
+    }
     this.projectileOriginPoint = {
       x: this.position.x + this.width / 2,
       y: this.position.y - 1
@@ -67,6 +75,10 @@ export default class Ship {
   Update(deltaTime) {
     this.position.x += this.horizontalSpeed / deltaTime;
     this.position.y += this.verticalSpeed / deltaTime;
+    this.center = {
+      x: this.position.x + this.width / 2,
+      y: this.position.y + this.height / 2
+    }
 
     if (this.position.x < 0) this.position.x = 0;
     if (this.position.x + this.width > this.gameWidth)
