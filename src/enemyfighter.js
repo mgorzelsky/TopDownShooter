@@ -26,14 +26,14 @@ export default class EnemyFighter {
 
     this.markedForDeletion = false;
 
-    this.projectileSpeed = 70;
+    this.projectileSpeed = 10;
     this.fireVector = {
       x: 0,
       y: 70
     }
     this.projectileOriginPoint = {
-      x: this.position.x + this.width / 2,
-      y: this.position.y + this.height + 2
+      x: this.position.x + 41,
+      y: this.center.y
     };
 
     this.fireRate = 100;
@@ -57,17 +57,20 @@ export default class EnemyFighter {
   }
 
   CalculateOrientation(c) {
+    let sideX = this.game.ship.center.x - this.center.x; // a
+    let sideY = this.game.ship.center.y - this.center.y; // b
+    let sideC = Math.sqrt(Math.pow(sideX, 2) + Math.pow(sideY, 2)); // c
     //TOP LEFT
     if (this.game.ship.center.x < this.center.x && this.game.ship.center.y < this.center.y) {
-      return Math.acos((c ** 2 + this.fireVector.x ** 2 - this.fireVector.y ** 2) / Math.abs((2 * c * this.fireVector.x)));
+      return Math.acos((sideC ** 2 + sideX ** 2 - sideY ** 2) / Math.abs((2 * sideC * sideX)));
     }
     //TOP RIGHT
-    else if(this.game.ship.center.x > this.center.x && this.game.ship.center.y < this.center.y) {
-      return Math.acos((c ** 2 + this.fireVector.x ** 2 - this.fireVector.y ** 2) / -(2 * c * this.fireVector.x));
+    else if (this.game.ship.center.x > this.center.x && this.game.ship.center.y < this.center.y) {
+      return Math.acos((sideC ** 2 + sideX ** 2 - sideY ** 2) / -(2 * sideC * sideX));
     }
     //positive y
     else {
-      return Math.acos((c ** 2 + this.fireVector.x ** 2 - this.fireVector.y ** 2) / (2 * c * this.fireVector.x));
+      return Math.acos((sideC ** 2 + sideX ** 2 - sideY ** 2) / (2 * sideC * sideX));
     }
   }
 
@@ -115,8 +118,8 @@ export default class EnemyFighter {
       this.position.y = this.gameHeight - this.height;
 
     this.projectileOriginPoint = {
-      x: this.position.x + this.width / 2,
-      y: this.position.y + this.height + 2
+      x: this.position.x + 41,
+      y: this.center.y
     };
 
     this.count++;
