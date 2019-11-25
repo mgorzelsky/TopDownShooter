@@ -30,8 +30,8 @@ export default class Ship {
       y: -70
     };
     this.projectileOriginPoint = {
-      x: this.position.x + this.width / 2,
-      y: this.position.y - 1
+      x: this.position.x + this.width / 2 - 5 / 2,
+      y: this.position.y - 1 - 5/ 2
     };
 
     this.fireRate = 15;
@@ -69,8 +69,8 @@ export default class Ship {
     this.position.y = this.gameHeight - this.height;
     
     this.projectileOriginPoint = {
-      x: this.position.x + this.width / 2,
-      y: this.position.y - 1
+      x: this.position.x + this.width / 2 - 5 / 2,
+      y: this.position.y - 1 - 5 / 2
     };
 
     //count counts up every update until it hits the fire rate, then if the ship isfiring - Fire() and reset the count,

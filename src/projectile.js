@@ -18,8 +18,8 @@ export default class Projectile {
     this.size = 5;
 
     this.position = {
-      x: originObject.projectileOriginPoint.x - this.size / 2,
-      y: originObject.projectileOriginPoint.y - this.size
+      x: originObject.projectileOriginPoint.x,
+      y: originObject.projectileOriginPoint.y
     };
 
     this.markedForDeletion = false;
