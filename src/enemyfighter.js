@@ -11,6 +11,8 @@ export default class EnemyFighter {
     }
     this.width = 39;
     this.height = 27;
+    // This position representes the top left corner of the ship image. It HAS to stay constant (unless ship movement
+    // instead of just rotating is introduced. Then everything needs to be re-worked,)
     this.position = {
       x: game.gameWidth / 2 - this.width / 2,
       y: game.gameHeight / 2 - this.height / 2
@@ -20,6 +22,22 @@ export default class EnemyFighter {
     this.center = {
       x: this.position.x + this.width / 2,
       y: this.position.y + this.height / 2
+    }
+    this.rearLeftCorner = {
+      x: this.position.x,
+      y: this.position.y
+    }
+    this.rearRightCorner = {
+      x: this.position.x,
+      y: this.position.y + this.height
+    }
+    this.frontLeftCorner = {
+      x: this.position.x + this.width,
+      y: this.position.y
+    }
+    this.frontRightCorner = {
+      x: this.position.x + this.width,
+      y: this.position.y + this.height
     }
 
     this.maxSpeed = 3;
@@ -80,6 +98,14 @@ export default class EnemyFighter {
     }
   }
 
+  RotateHitbox(x, y) {
+    // x′=xcosθ−ysinθ
+    // y′=ycosθ+xsinθ
+    let newX = x * Math.cos(this.angle) - y * Math.sin(this.angle);
+    let newY = y * Math.cos(this.angle) + x * Math.sin(this.angle);
+    return [newX, newY]
+  }
+
   Fire() {
     this.game.CreateProjectile(this);
   }
@@ -99,16 +125,19 @@ export default class EnemyFighter {
       ctx.rotate(-this.angle);
     }
     ctx.translate(-this.center.x, -this.center.y);
+
+    ctx.fillRect(this.rearLeftCorner.x, this.rearLeftCorner.y, 1, 1);
+    ctx.fillRect(this.rearRightCorner.x, this.rearRightCorner.y, 1, 1);
+    ctx.fillRect(this.frontLeftCorner.x, this.frontLeftCorner.y, 1, 1);
+    ctx.fillRect(this.frontRightCorner.x, this.frontRightCorner.y, 1, 1);
   }
 
   Update(deltaTime) {
     this.TrackPlayer();
-    this.position.x += this.speed.x / deltaTime;
-    this.position.y += this.speed.y / deltaTime;
-    this.center = {
-      x: this.position.x + this.width / 2,
-      y: this.position.y + this.height / 2
-    }
+    [this.rearLeftCorner.x, this.rearLeftCorner.y] = this.RotateHitbox(this.rearLeftCorner.x, this.rearLeftCorner.y);
+    [this.rearRightCorner.x, this.rearRightCorner.y] = this.RotateHitbox(this.rearRightCorner.x, this.rearRightCorner.y);
+    [this.frontLeftCorner.x, this.frontLeftCorner.y] = this.RotateHitbox(this.frontLeftCorner.x, this.frontLeftCorner.y);
+    [this.frontRightCorner.x, this.frontRightCorner.y] = this.RotateHitbox(this.frontRightCorner.x, this.frontRightCorner.y);
 
     if (this.position.x < 0) this.position.x = 0;
     if (this.position.x + this.width > this.game.gameWidth)
@@ -118,8 +147,8 @@ export default class EnemyFighter {
       this.position.y = this.game.gameHeight - this.height;
 
     this.projectileOriginPoint = {
-      x: (((this.position.x + this.width) + (this.position.x + this.width)) / 2) + this.shipSlope.x,
-      y: ((this.position.y + (this.position.y + this.height))) / 2 + this.shipSlope.y
+      x: ((this.frontLeftCorner.x + this.frontRightCorner.x) / 2),
+      y: ((this.frontLeftCorner.y + this.frontRightCorner.y) / 2)
     };
 
     this.count++;
