@@ -1,3 +1,5 @@
+import { DetectCollision } from "./collisiondetection.js";
+
 export default class Ship {
   constructor(game) {
     //Tell ship what is in the space
@@ -31,7 +33,7 @@ export default class Ship {
     };
     this.projectileOriginPoint = {
       x: this.position.x + this.width / 2 - 5 / 2,
-      y: this.position.y - 1 - 5/ 2
+      y: this.position.y - 1 - 5 / 2
     };
 
     this.fireRate = 15;
@@ -59,15 +61,15 @@ export default class Ship {
       x: this.position.x + this.width / 2,
       y: this.position.y + this.height / 2
     }
-    
+
     //Do not let the ship leave the game area.
     if (this.position.x < 0) this.position.x = 0;
     if (this.position.x + this.width > this.gameWidth)
-    this.position.x = this.gameWidth - this.width;
+      this.position.x = this.gameWidth - this.width;
     if (this.position.y < 0) this.position.y = 0;
     if (this.position.y + this.height > this.gameHeight)
-    this.position.y = this.gameHeight - this.height;
-    
+      this.position.y = this.gameHeight - this.height;
+
     this.projectileOriginPoint = {
       x: this.position.x + this.width / 2 - 5 / 2,
       y: this.position.y - 1 - 5 / 2
@@ -83,6 +85,13 @@ export default class Ship {
     if (this.count === this.fireRate) {
       this.count = 1;
     }
+
+    //check to see if the ship has collided with any of the enemy fighters, if it has mark the ship for deletion.
+    // this.game.enemyFighters.forEach(object => {
+    //   if (DetectCollision(this, object)) {
+    //     this.markedForDeletion = true;
+    //   }
+    // });
   }
 
   Draw(ctx) {

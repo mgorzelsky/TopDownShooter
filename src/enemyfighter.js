@@ -3,15 +3,17 @@ export default class EnemyFighter {
     this.image = document.getElementById("img_enemyFighter");
 
     this.game = game;
-    this.gameWidth = game.gameWidth;
-    this.gameHeight = game.gameHeight;
 
     this.angle = 0;
+    this.shipSlope = {
+      x: 0,
+      y: 0
+    }
     this.width = 39;
     this.height = 27;
     this.position = {
-      x: this.gameWidth / 2 - this.width / 2,
-      y: this.gameHeight / 2 - this.height / 2
+      x: game.gameWidth / 2 - this.width / 2,
+      y: game.gameHeight / 2 - this.height / 2
       // x: Math.floor(Math.random() * game.gameWidth),
       // y: Math.floor(Math.random() * (game.gameHeight / 2))
     };
@@ -51,17 +53,19 @@ export default class EnemyFighter {
 
     // angle B
     //Calculate angle from enemy fighter to player in radians
-    this.angle = this.CalculateOrientation(magnitude);
+    this.angle = this.CalculateOrientation();
 
     //Normalized values so that projectiles move the same speed regardless of distance to the target.
     this.fireVector.x = (this.fireVector.x / magnitude) * this.projectileSpeed;
     this.fireVector.y = (this.fireVector.y / magnitude) * this.projectileSpeed;
   }
 
-  CalculateOrientation(c) {
+  CalculateOrientation() {
     let sideX = this.game.ship.center.x - this.center.x; // a
     let sideY = this.game.ship.center.y - this.center.y; // b
     let sideC = Math.sqrt(Math.pow(sideX, 2) + Math.pow(sideY, 2)); // c
+    this.shipSlope.x = sideX / sideC;
+    this.shipSlope.y = sideY / sideC;
     //TOP LEFT
     if (this.game.ship.center.x < this.center.x && this.game.ship.center.y < this.center.y) {
       return Math.acos((sideC ** 2 + sideX ** 2 - sideY ** 2) / Math.abs((2 * sideC * sideX)));
@@ -107,15 +111,15 @@ export default class EnemyFighter {
     }
 
     if (this.position.x < 0) this.position.x = 0;
-    if (this.position.x + this.width > this.gameWidth)
-      this.position.x = this.gameWidth - this.width;
+    if (this.position.x + this.width > this.game.gameWidth)
+      this.position.x = this.game.gameWidth - this.width;
     if (this.position.y < 0) this.position.y = 0;
-    if (this.position.y + this.height > this.gameHeight)
-      this.position.y = this.gameHeight - this.height;
+    if (this.position.y + this.height > this.game.gameHeight)
+      this.position.y = this.game.gameHeight - this.height;
 
     this.projectileOriginPoint = {
-      x: this.position.x + 41,
-      y: this.center.y
+      x: (((this.position.x + this.width) + (this.position.x + this.width)) / 2) + this.shipSlope.x,
+      y: ((this.position.y + (this.position.y + this.height))) / 2 + this.shipSlope.y
     };
 
     this.count++;

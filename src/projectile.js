@@ -9,13 +9,13 @@ export default class Projectile {
 
     this.game = originObject.game;
 
-    //this.speed = originObject.projectileSpeed;
     this.vector = {
       x: originObject.fireVector.x,
       y: originObject.fireVector.y
     }
 
-    this.size = 5;
+    this.width = 5;
+    this.height = 5;
 
     this.position = {
       x: originObject.projectileOriginPoint.x,
@@ -26,7 +26,6 @@ export default class Projectile {
   }
 
   Update(deltaTime) {
-    //this.position.y += this.speed / deltaTime;
     this.position.x += this.vector.x / deltaTime;
     this.position.y += this.vector.y / deltaTime;
 
@@ -34,7 +33,7 @@ export default class Projectile {
     if (this.position.y < 0 
       || this.position.y > this.gameHeight
       || this.position.x < 0
-      || this.position.x > this.gameHeight) {
+      || this.position.x > this.gameWidth) {
       this.markedForDeletion = true;
     }
 
@@ -57,8 +56,8 @@ export default class Projectile {
       this.image,
       this.position.x,
       this.position.y,
-      this.size,
-      this.size
+      this.width,
+      this.height
     );
   }
 }
