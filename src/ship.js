@@ -9,6 +9,8 @@ export default class Ship {
     this.gameWidth = game.gameWidth;
     this.gameHeight = game.gameHeight;
 
+    this.ID = "Player";
+
     //Define the size and position of the ship
     this.width = 27;
     this.height = 39;
@@ -87,11 +89,11 @@ export default class Ship {
     }
 
     //check to see if the ship has collided with any of the enemy fighters, if it has mark the ship for deletion.
-    // this.game.enemyFighters.forEach(object => {
-    //   if (DetectCollision(this, object)) {
-    //     this.markedForDeletion = true;
-    //   }
-    // });
+    this.game.enemyFighters.forEach(object => {
+      if (DetectCollision(this, object)) {
+        this.markedForDeletion = true;
+      }
+    });
   }
 
   Draw(ctx) {

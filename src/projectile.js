@@ -4,6 +4,8 @@ export default class Projectile {
   constructor(originObject) {
     this.image = document.getElementById("img_projectile");
 
+    this.ID = originObject.ID;
+
     this.gameWidth = originObject.gameWidth;
     this.gameHeight = originObject.gameHeight;
 
@@ -37,18 +39,18 @@ export default class Projectile {
       this.markedForDeletion = true;
     }
 
-    // this.game.gameObjects.forEach(object => {
-    //   if (DetectCollision(this, object)) {
-    //     object.markedForDeletion = true;
-    //     this.markedForDeletion = true;
-    //   }
-    // });
-    // this.game.enemyFighters.forEach(object => {
-    //   if (DetectCollision(this, object)) {
-    //     object.markedForDeletion = true;
-    //     this.markedForDeletion = true;
-    //   }
-    // });
+    this.game.gameObjects.forEach(object => {
+      if (DetectCollision(this, object)) {
+        object.markedForDeletion = true;
+        this.markedForDeletion = true;
+      }
+    });
+    this.game.enemyFighters.forEach(object => {
+      if (DetectCollision(this, object)) {
+        object.markedForDeletion = true;
+        this.markedForDeletion = true;
+      }
+    });
   }
 
   Draw(ctx) {

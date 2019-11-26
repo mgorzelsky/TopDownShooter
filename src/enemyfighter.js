@@ -4,6 +4,8 @@ export default class EnemyFighter {
 
     this.game = game;
 
+    this.ID = "EnemyFighter";
+
     this.angle = 0;
     this.shipSlope = {
       x: 0,
@@ -14,10 +16,10 @@ export default class EnemyFighter {
     // This position representes the top left corner of the ship image. It HAS to stay constant (unless ship movement
     // instead of just rotating is introduced. Then everything needs to be re-worked,)
     this.position = {
-      x: game.gameWidth / 2 - this.width / 2,
-      y: game.gameHeight / 2 - this.height / 2
-      // x: Math.floor(Math.random() * game.gameWidth),
-      // y: Math.floor(Math.random() * (game.gameHeight / 2))
+      // x: game.gameWidth / 2 - this.width / 2,
+      // y: game.gameHeight / 2 - this.height / 2
+      x: Math.random() * (game.gameWidth - 50),
+      y: Math.random() * ((game.gameHeight / 2) - 50)
     };
     this.center = {
       x: this.position.x + this.width / 2,
@@ -65,7 +67,7 @@ export default class EnemyFighter {
 
     this.markedForDeletion = false;
 
-    this.projectileSpeed = 10;
+    this.projectileSpeed = 50;
     this.fireVector = {
       x: 0,
       y: 70
@@ -76,7 +78,7 @@ export default class EnemyFighter {
       y: this.position.y + this.height / 2 - 5 / 2
     };
 
-    this.fireRate = 50;
+    this.fireRate = 70;
     this.count = 1;
   }
 
@@ -177,8 +179,8 @@ export default class EnemyFighter {
       this.position.y = this.game.gameHeight - this.height;
 
     this.projectileOriginPoint = {
-      x: ((this.frontLeftCorner.x + this.frontRightCorner.x) / 2),
-      y: ((this.frontLeftCorner.y + this.frontRightCorner.y) / 2)
+      x: ((this.frontLeftCorner.x + this.frontRightCorner.x) / 2) + this.shipSlope.x,
+      y: ((this.frontLeftCorner.y + this.frontRightCorner.y) / 2) + this.shipSlope.y
     };
 
     this.count++;

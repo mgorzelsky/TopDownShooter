@@ -6,6 +6,10 @@ export function DetectCollision(collidingObject, gameObject) {
   let topY = collidingObject.position.y;
   let bottomY = collidingObject.position.y + collidingObject.height;
 
+  //If the collision is between the same type of object that created the projectile, discard it.
+  if (collidingObject.ID === gameObject.ID) {
+    return false;
+  }
   //Check each corner of the collidingObject to see if it is within the gameObject. If it is, return true to indicate a
   //collision has happened. 
   if (

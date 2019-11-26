@@ -23,7 +23,7 @@ export default class Game {
     this.gameState = GAME_STATE.RUNNING;
     
     this.ship = new Ship(this);
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 4; i++) {
       this.enemyFighters.push(new EnemyFighter(this));
     }
     this.gameObjects = [this.ship];
