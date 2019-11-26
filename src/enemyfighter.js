@@ -23,21 +23,38 @@ export default class EnemyFighter {
       x: this.position.x + this.width / 2,
       y: this.position.y + this.height / 2
     }
-    this.rearLeftCorner = {
+    this.originalRearLeftCorner = {
       x: this.position.x,
       y: this.position.y
+    }
+    this.originalRearRightCorner = {
+      x: this.position.x,
+      y: this.position.y + this.height
+    }
+    this.originalFrontLeftCorner = {
+      x: this.position.x + this.width,
+      y: this.position.y
+    }
+    this.originalFrontRightCorner = {
+      x: this.position.x + this.width,
+      y: this.position.y + this.height
+    }
+
+    this.rearLeftCorner = {
+      x: this.originalRearLeftCorner.x,
+      y: this.originalRearLeftCorner.y
     }
     this.rearRightCorner = {
-      x: this.position.x,
-      y: this.position.y + this.height
+      x: this.originalRearRightCorner.x,
+      y: this.originalRearRightCorner.y
     }
     this.frontLeftCorner = {
-      x: this.position.x + this.width,
-      y: this.position.y
+      x: this.originalFrontLeftCorner.x,
+      y: this.originalFrontLeftCorner.y
     }
     this.frontRightCorner = {
-      x: this.position.x + this.width,
-      y: this.position.y + this.height
+      x: this.originalFrontRightCorner.x,
+      y: this.originalFrontRightCorner.y
     }
 
     this.maxSpeed = 3;
@@ -48,7 +65,7 @@ export default class EnemyFighter {
 
     this.markedForDeletion = false;
 
-    this.projectileSpeed = 70;
+    this.projectileSpeed = 10;
     this.fireVector = {
       x: 0,
       y: 70
@@ -84,8 +101,11 @@ export default class EnemyFighter {
     let sideC = Math.sqrt(Math.pow(sideX, 2) + Math.pow(sideY, 2)); // c
     this.shipSlope.x = sideX / sideC;
     this.shipSlope.y = sideY / sideC;
+    if (sideX === 0 || sideC === 0) {
+      return 0;
+    }
     //TOP LEFT
-    if (this.game.ship.center.x < this.center.x && this.game.ship.center.y < this.center.y) {
+    else if (this.game.ship.center.x < this.center.x && this.game.ship.center.y < this.center.y) {
       return Math.acos((sideC ** 2 + sideX ** 2 - sideY ** 2) / Math.abs((2 * sideC * sideX)));
     }
     //TOP RIGHT
@@ -99,10 +119,20 @@ export default class EnemyFighter {
   }
 
   RotateHitbox(x, y) {
-    // x′=xcosθ−ysinθ
-    // y′=ycosθ+xsinθ
-    let newX = x * Math.cos(this.angle) - y * Math.sin(this.angle);
-    let newY = y * Math.cos(this.angle) + x * Math.sin(this.angle);
+    let newX = 0;
+    let newY = 0;
+    let tempX = x - this.center.x;
+    let tempY = y - this.center.y;
+    if (this.center.y < this.game.ship.center.y) {
+      newX = tempX * Math.cos(this.angle) - tempY * Math.sin(this.angle);
+      newY = tempY * Math.cos(this.angle) + tempX * Math.sin(this.angle);
+    }
+    else {
+      newX = tempX * Math.cos(this.angle + Math.PI) - tempY * Math.sin(this.angle + Math.PI);
+      newY = tempY * Math.cos(this.angle + Math.PI) + tempX * Math.sin(this.angle + Math.PI);
+    }
+    newX += this.center.x;
+    newY += this.center.y;
     return [newX, newY]
   }
 
@@ -134,10 +164,10 @@ export default class EnemyFighter {
 
   Update(deltaTime) {
     this.TrackPlayer();
-    [this.rearLeftCorner.x, this.rearLeftCorner.y] = this.RotateHitbox(this.rearLeftCorner.x, this.rearLeftCorner.y);
-    [this.rearRightCorner.x, this.rearRightCorner.y] = this.RotateHitbox(this.rearRightCorner.x, this.rearRightCorner.y);
-    [this.frontLeftCorner.x, this.frontLeftCorner.y] = this.RotateHitbox(this.frontLeftCorner.x, this.frontLeftCorner.y);
-    [this.frontRightCorner.x, this.frontRightCorner.y] = this.RotateHitbox(this.frontRightCorner.x, this.frontRightCorner.y);
+    [this.rearLeftCorner.x, this.rearLeftCorner.y] = this.RotateHitbox(this.originalRearLeftCorner.x, this.originalRearLeftCorner.y);
+    [this.rearRightCorner.x, this.rearRightCorner.y] = this.RotateHitbox(this.originalRearRightCorner.x, this.originalRearRightCorner.y);
+    [this.frontLeftCorner.x, this.frontLeftCorner.y] = this.RotateHitbox(this.originalFrontLeftCorner.x, this.originalFrontLeftCorner.y);
+    [this.frontRightCorner.x, this.frontRightCorner.y] = this.RotateHitbox(this.originalFrontRightCorner.x, this.originalFrontRightCorner.y);
 
     if (this.position.x < 0) this.position.x = 0;
     if (this.position.x + this.width > this.game.gameWidth)
